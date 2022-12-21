@@ -12,6 +12,12 @@ public class invoiceLine {
         this.itemPrice = itemPrice;
         this.itemCount = itemCount;
     }
+    public invoiceLine(String [] data) {
+        this.invoiceNumber = Integer.parseInt(data[0]);
+        this.itemName = data[1];
+        this.itemPrice = Double.parseDouble(data[2]);
+        this.itemCount = Integer.parseInt(data[3]);
+    }
 
     public String getItemName() {
         return itemName;

@@ -5,20 +5,26 @@ import java.util.Date;
 
 public class invoiceHeader {
     private  int invoiceNumber;
-    private Date invoiceDate;
+    private String invoiceDate;
     private String customerName;
     private ArrayList<invoiceLine> invoiceItems;
 
-    public invoiceHeader(int invoiceNumber, Date invoiceDate, String customerName) {
+    public invoiceHeader(int invoiceNumber, String invoiceDate, String customerName) {
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
         this.customerName = customerName;
     }
 
-    public invoiceHeader(int invoiceNumber, Date invoiceDate, String customerName, ArrayList<invoiceLine> invoiceItems) {
+    public invoiceHeader(int invoiceNumber, String invoiceDate, String customerName, ArrayList<invoiceLine> invoiceItems) {
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
         this.customerName = customerName;
+        this.invoiceItems = invoiceItems;
+    }
+    public invoiceHeader(String []data, ArrayList<invoiceLine> invoiceItems) {
+        this.invoiceNumber = Integer.parseInt(data[0]);
+        this.invoiceDate = data[1];
+        this.customerName = data[2];
         this.invoiceItems = invoiceItems;
     }
 
@@ -26,7 +32,7 @@ public class invoiceHeader {
         return invoiceNumber;
     }
 
-    public Date getInvoiceDate() {
+    public String getInvoiceDate() {
         return invoiceDate;
     }
 
