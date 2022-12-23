@@ -6,6 +6,10 @@ public class invoiceLine {
     private Double itemPrice;
     private int itemCount;
 
+    public int getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
     public invoiceLine(int invoiceNumber, String itemName, Double itemPrice, int itemCount) {
         this.invoiceNumber = invoiceNumber;
         this.itemName = itemName;
