@@ -51,9 +51,7 @@ ArrayList<invoiceLine> invoiceItems = new ArrayList<>();
             MainController.mainFrame.customerNameTextField.setText(MainFrame.fileOperations.invoiceHeaderArrayList.get(invoiceIndex).getCustomerName());
             MainController.mainFrame.invoiceDateTextField.setText(MainFrame.fileOperations.invoiceHeaderArrayList.get(invoiceIndex).getInvoiceDate());
             MainController.mainFrame.invoiceNumberLabel.setText(Integer.toString(invoiceNumber));
-//            MainFrameController.mainFrame.invoicesTotalLabel.setText();
             MainController.mainFrame.invoicesTotalLabel.setText(String.valueOf( MainController.mainFrame.invoiceTable.getInvoicesTable().getValueAt(invoiceIndex,3)));
-//            MainFrameController.mainFrame.l
         }
     }
 }

@@ -358,59 +358,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
     }
 
-//        @Override
-//
-//
-//        public void valueChanged (ListSelectionEvent event){
-//            System.out.println("selected");
-//            if (invoiceTable.getSelectedRow() > -1) {
-//
-//                int invoiceIndex = invoiceTable.getSelectedRow();
-//                String[][] data = new String[FileOperations.invoiceHeaderArrayList.get(invoiceIndex).getInvoiceItems().size()][5];
-//
-//                int i = 0;
-//                for (invoiceLine x :
-//                        FileOperations.invoiceHeaderArrayList.get(invoiceIndex).getInvoiceItems()) {
-//                    data[i][0] = Integer.toString(i + 1);
-//                    data[i][1] = x.getItemName();
-//                    data[i][2] = Double.toString(x.getItemPrice());
-//                    data[i][3] = Integer.toString(x.getItemCount());
-//                    data[i][4] = Double.toString(x.getItemCount() * x.getItemPrice());
-//                    i++;
-//                }
-//                remove(itemsTable);
-//                remove(itemsTableScroll);
-//                itemsTable = new ItemsTable(data);
-//                itemsTableScroll = new JScrollPane(itemsTable.getInvoiceItemsTable());
-//                itemsTableScroll.setBounds(600, 283, 500, 402);
-//                add(itemsTableScroll);
-//                // System.out.println(itemListener());
-//
-////                    try {
-////                        InvoicesTable data = new InvoicesTable();
-////                        String[][] dataList = data.data("InvoiceHeader.csv", "InvoiceLine.csv");
-////                        for (int i = 0; i < dataList.length; i++) {
-////                            if (dataList[i][0].equals(s)) {
-////                                invoiceNum = dataList[i][0];
-////
-////                                mInvoiceDate.getInvoiceDate().setText(dataList[i][1]);
-////                                mCustomerName.getCustomerName().setText(dataList[i][2]);
-////                                totalInvoiceDta = dataList[i][3];
-////                                invoiceTotalNum.setText(totalInvoiceDta);
-////                                invoiceNumberNum.setText(invoiceNum);
-////
-////
-////                                break;
-////                            }
-////                        }
-////
-////
-////                    } catch (IOException e) {
-////                        throw new RuntimeException(e);
-////                    }
-//
-//
-//            }
-//        }
+
     }
 
