@@ -1,6 +1,6 @@
 package View.Tables;
 
-import Controller.testttt;
+import Controller.MousaHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 public class InvoiceTable extends  JTable{
     public JTable invoicesTable;
     private Object [] cols= {"No.","Date","Customer", "Total"};
-    private  static testttt testttt= new testttt();
+    private  static MousaHandler testttt= new MousaHandler();
     private  static DefaultTableModel model = new DefaultTableModel();
 
     public InvoiceTable(){

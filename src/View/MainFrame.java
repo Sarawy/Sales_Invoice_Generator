@@ -129,7 +129,7 @@ public class MainFrame extends JFrame implements ActionListener {
 //        addMouseListener(new testttt());
         menuBar.saveFileMenu.setActionCommand("Save File");
         menuBar.saveFileMenu.addActionListener(this::actionPerformed);
-
+    loadFile();
     }
 
 
@@ -152,9 +152,12 @@ public class MainFrame extends JFrame implements ActionListener {
                 break;
             case "Load":
                 loadFile();
+                JOptionPane.showMessageDialog(this,"Data Loaded Successfulyy form CSV files","Load Data",JOptionPane.INFORMATION_MESSAGE);
                 break;
             case "Save File":
                 fileOperations.writeFile(FileOperations.invoiceHeaderArrayList);
+                JOptionPane.showMessageDialog(this,"Data Saved Successfulyy to CSV files","Save Data",JOptionPane.INFORMATION_MESSAGE);
+
                 break;
 
         }
