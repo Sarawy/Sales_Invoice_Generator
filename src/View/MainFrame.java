@@ -25,8 +25,8 @@ public class MainFrame extends JFrame implements ActionListener {
     public JLabel invoiceNumberLabel;
     private JButton newInvoiceBtn;
     private JButton deleteInvoiceBtn;
-    private JButton saveInvoiceBtn;
-    private JButton cancelInvoiceBtn;
+    private JButton createItemBtn;
+    private JButton deleteItemBtn;
     public InvoiceTable invoiceTable;
     public JScrollPane invoiceTableScroll;
     private JLabel invoicesTableLabel;
@@ -106,23 +106,23 @@ public class MainFrame extends JFrame implements ActionListener {
         itemsTableScroll.setBounds(600, 283, 500, 402);
         add(itemsTableScroll);
 
-        saveInvoiceBtn = new JButton("Save");
-        saveInvoiceBtn.setBounds(700, 725, 120, 20);
-        add(saveInvoiceBtn);
+        createItemBtn = new JButton("Save");
+        createItemBtn.setBounds(700, 725, 120, 20);
+        add(createItemBtn);
 
-        cancelInvoiceBtn = new JButton("Cancel");
-        cancelInvoiceBtn.setBounds(880, 725, 120, 20);
+        deleteItemBtn = new JButton("Cancel");
+        deleteItemBtn.setBounds(880, 725, 120, 20);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        saveInvoiceBtn.setActionCommand("Save Invoice");
+        createItemBtn.setActionCommand("Save Invoice");
         deleteInvoiceBtn.setActionCommand("Delete Invoice");
         newInvoiceBtn.setActionCommand("New Invoice");
-        cancelInvoiceBtn.setActionCommand("Cancel");
-        saveInvoiceBtn.addActionListener(this::actionPerformed);
+        deleteItemBtn.setActionCommand("Cancel");
+        createItemBtn.addActionListener(this::actionPerformed);
         deleteInvoiceBtn.addActionListener(this::actionPerformed);
         newInvoiceBtn.addActionListener(this::actionPerformed);
-        cancelInvoiceBtn.addActionListener(this::actionPerformed);
-        add(cancelInvoiceBtn);
+        deleteItemBtn.addActionListener(this::actionPerformed);
+        add(deleteItemBtn);
         menuBar.loadFileMenu.setActionCommand("Load");
         menuBar.loadFileMenu.addActionListener(this::actionPerformed);
 //        invoiceTable.addMouseListener(new testttt());
