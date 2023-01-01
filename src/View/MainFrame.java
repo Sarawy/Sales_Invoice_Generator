@@ -8,6 +8,7 @@ import View.Tables.InvoiceTable;
 import View.Tables.ItemsTable;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -129,7 +130,8 @@ public class MainFrame extends JFrame implements ActionListener {
 //        addMouseListener(new testttt());
         menuBar.saveFileMenu.setActionCommand("Save File");
         menuBar.saveFileMenu.addActionListener(this::actionPerformed);
-    loadFile();
+
+        loadFile();
     }
 
 
@@ -151,12 +153,11 @@ public class MainFrame extends JFrame implements ActionListener {
                 cancel();
                 break;
             case "Load":
+
                 loadFile();
-                JOptionPane.showMessageDialog(this,"Data Loaded Successfulyy form CSV files","Load Data",JOptionPane.INFORMATION_MESSAGE);
                 break;
             case "Save File":
                 fileOperations.writeFile(FileOperations.invoiceHeaderArrayList);
-                JOptionPane.showMessageDialog(this,"Data Saved Successfulyy to CSV files","Save Data",JOptionPane.INFORMATION_MESSAGE);
 
                 break;
 
@@ -179,27 +180,40 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private void loadFile() {
-        try {
-            ArrayList<invoiceHeader> readFile = fileOperations.readFile("InvoiceHeader.csv", "InvoiceLine.csv");
-            String data[][] = getInvoiceData(readFile);
-            System.out.println(invoiceTable.getRowCount());
-            remove(invoiceTable);
-            remove(invoiceTableScroll);
-            invoiceTable = new InvoiceTable(data);
-            invoiceTableScroll = new JScrollPane(invoiceTable.getInvoicesTable());
-            invoiceTableScroll.setBounds(10, 35, 500, 650);
-            add(invoiceTableScroll);
+        String headerPath,linePath;
+        JFileChooser fcInvoice = new JFileChooser();
+        FileNameExtensionFilter xx = new FileNameExtensionFilter("Csv Files","csv");
+        fcInvoice.setFileFilter(xx);
+        JOptionPane.showMessageDialog(this,"Please Choose Invoice Header Csv Files","Invoice Header",JOptionPane.INFORMATION_MESSAGE);
+
+        if(fcInvoice.showOpenDialog(this)==JFileChooser.APPROVE_OPTION) {
+            headerPath = fcInvoice.getSelectedFile().getPath();
+            if (headerPath.endsWith(".csv")) {
+                JOptionPane.showMessageDialog(this,"Please Choose Invoice Line Csv Files","Invoice Line",JOptionPane.INFORMATION_MESSAGE);
+
+                if(fcInvoice.showOpenDialog(this)==JFileChooser.APPROVE_OPTION) {
+                    linePath=fcInvoice.getSelectedFile().getPath();
+                    if (linePath.endsWith(".csv")) {
+                        try {
+                            ArrayList<invoiceHeader> readFile = fileOperations.readFile(headerPath, linePath);
+                            String data[][] = getInvoiceData(readFile);
+                            System.out.println(invoiceTable.getRowCount());
+                            remove(invoiceTable);
+                            remove(invoiceTableScroll);
+                            invoiceTable = new InvoiceTable(data);
+                            invoiceTableScroll = new JScrollPane(invoiceTable.getInvoicesTable());
+                            invoiceTableScroll.setBounds(10, 35, 500, 650);
+                            add(invoiceTableScroll);
+                          //  JOptionPane.showMessageDialog(this,"Data Loaded Successfulyy form CSV files","Load Data",JOptionPane.INFORMATION_MESSAGE);
 
 
-            //setVisible(false);
 
-//            revalidate();
-//            repaint();
-//            setVisible(true);
-
-
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                    }
+                }
+            }
         }
     }
 

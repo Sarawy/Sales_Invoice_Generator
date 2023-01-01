@@ -1,5 +1,8 @@
 package Model;
 
+import Controller.MainController;
+
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -79,6 +82,7 @@ public class FileOperations {
             fw1.write(headerI.toString());
             fw2.write(lineI.toString());
 
+            JOptionPane.showMessageDialog(MainController.mainFrame,"Data Saved Successfulyy to CSV files","Save Data",JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException e) {
             e.printStackTrace();
