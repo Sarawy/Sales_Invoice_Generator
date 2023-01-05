@@ -107,11 +107,11 @@ public class MainFrame extends JFrame implements ActionListener {
         itemsTableScroll.setBounds(600, 283, 500, 402);
         add(itemsTableScroll);
 
-        createItemBtn = new JButton("Save");
+        createItemBtn = new JButton("Create Item");
         createItemBtn.setBounds(700, 725, 120, 20);
         add(createItemBtn);
 
-        deleteItemBtn = new JButton("Cancel");
+        deleteItemBtn = new JButton("Delete Item");
         deleteItemBtn.setBounds(880, 725, 120, 20);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -313,6 +313,7 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private void saveInvoice() {
+
         int invoiceNum = Integer.parseInt(invoiceNumberLabel.getText());
         int i = 0;
         for (invoiceHeader h :
@@ -335,9 +336,7 @@ public class MainFrame extends JFrame implements ActionListener {
         }
         ArrayList<invoiceLine> lines = new ArrayList<>();
         for (int z = 0; z < itemsTable.getInvoiceItemsTable().getRowCount(); z++) {
-            System.out.println("Row " +z);
             if (itemsTable.getInvoiceItemsTable().getValueAt(z, 1).toString() != "" && itemsTable.getInvoiceItemsTable().getValueAt(z, 2).toString()!= "" && itemsTable.getInvoiceItemsTable().getValueAt(z, 3).toString() != "" ) {
-                System.out.println("sssssssssssssss");
             System.out.println(itemsTable.getInvoiceItemsTable().getRowCount());
                 invoiceLine l = new invoiceLine(invoiceNum, itemsTable.getInvoiceItemsTable().getValueAt(z, 1).toString(), Double.parseDouble(itemsTable.getInvoiceItemsTable().getValueAt(z, 2).toString()),Integer.valueOf ((String) itemsTable.getInvoiceItemsTable().getValueAt(z, 3)));
                 FileOperations.invoiceLineArrayList.add(l);
