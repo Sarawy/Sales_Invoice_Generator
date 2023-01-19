@@ -17,14 +17,14 @@ public class MousaHandler extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
-
+        MainFrame.selectedRow=MainController.mainFrame.itemsTable.getInvoiceItemsTable().getSelectedRow();
         if (MainController.mainFrame.invoiceTable.getInvoicesTable().getSelectedRow() > -1) {
 
             int invoiceIndex = MainController.mainFrame.invoiceTable.getInvoicesTable().getSelectedRow();
             int invoiceNumber = Integer.parseInt(MainController.mainFrame.invoiceTable.getInvoicesTable().getValueAt(invoiceIndex,0).toString());
 
             String[][] data = new String[MainFrame.fileOperations.invoiceHeaderArrayList.get(invoiceIndex).getInvoiceItems().size()][5];
-ArrayList<invoiceLine> invoiceItems = new ArrayList<>();
+            ArrayList<invoiceLine> invoiceItems = new ArrayList<>();
             for (invoiceHeader h:
                     FileOperations.invoiceHeaderArrayList) {
                 if(h.getInvoiceNumber()==invoiceNumber) invoiceItems=h.getInvoiceItems();
@@ -53,5 +53,6 @@ ArrayList<invoiceLine> invoiceItems = new ArrayList<>();
             MainController.mainFrame.invoiceNumberLabel.setText(Integer.toString(invoiceNumber));
             MainController.mainFrame.invoicesTotalLabel.setText(String.valueOf( MainController.mainFrame.invoiceTable.getInvoicesTable().getValueAt(invoiceIndex,3)));
         }
+
     }
 }

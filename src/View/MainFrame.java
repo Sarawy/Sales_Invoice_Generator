@@ -1,5 +1,6 @@
 package View;
 
+import Controller.MainController;
 import Model.FileOperations;
 import Model.invoiceHeader;
 import Model.invoiceLine;
@@ -9,6 +10,7 @@ import View.Tables.ItemsTable;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -34,8 +36,9 @@ public class MainFrame extends JFrame implements ActionListener {
     public ItemsTable itemsTable;
     public JScrollPane itemsTableScroll;
     MenuBar menuBar;
+    private JDialog newItemDialog;
     public static FileOperations fileOperations = new FileOperations();
-
+    public  static  int selectedRow=-1;
     public MainFrame() {
         super("Sales Invoice Generator");
         setLayout(null);
@@ -115,10 +118,10 @@ public class MainFrame extends JFrame implements ActionListener {
         deleteItemBtn.setBounds(880, 725, 120, 20);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        createItemBtn.setActionCommand("Save Invoice");
+        createItemBtn.setActionCommand("Create Item");
         deleteInvoiceBtn.setActionCommand("Delete Invoice");
         newInvoiceBtn.setActionCommand("New Invoice");
-        deleteItemBtn.setActionCommand("Cancel");
+        deleteItemBtn.setActionCommand("Delete Item");
         createItemBtn.addActionListener(this::actionPerformed);
         deleteInvoiceBtn.addActionListener(this::actionPerformed);
         newInvoiceBtn.addActionListener(this::actionPerformed);
@@ -130,16 +133,51 @@ public class MainFrame extends JFrame implements ActionListener {
 //        addMouseListener(new testttt());
         menuBar.saveFileMenu.setActionCommand("Save File");
         menuBar.saveFileMenu.addActionListener(this::actionPerformed);
+        initialize_Item_Dialog();
+        //loadFile();
+       // item_Dialog.setVisible(true);
 
-        loadFile();
     }
+    JTextField  item_Name_TF_Dialog;
+    JTextField  item_price_TF_Dialog ;
+    JTextField  item_count_Tf_Dialog;
+    private void initialize_Item_Dialog () {
+        newItemDialog = new JDialog();
+        JLabel itemNameLabelDialog = new JLabel("Item Name : ");
+        JLabel itemPriceLabelDialog = new JLabel("Item Price : ");
+        JLabel itemCountLabelDialog = new JLabel("Item Count : ");
+          item_Name_TF_Dialog = new JTextField(30);
+          item_price_TF_Dialog = new JTextField(30);
+          item_count_Tf_Dialog = new JTextField(30);
+        JButton   saveItemBtn = new JButton("Ok");
+        JButton  cancelItemBTN = new JButton("Cancel");
+        saveItemBtn.setActionCommand("Item Add");
+        cancelItemBTN.setActionCommand("Item Cancel");
+        saveItemBtn.addActionListener(this);
+        cancelItemBTN.addActionListener(this);
 
+        newItemDialog.setLayout(new GridLayout(4, 2));
+        newItemDialog.add(itemNameLabelDialog);
+        newItemDialog.add(item_Name_TF_Dialog);
+        newItemDialog.add(itemCountLabelDialog);
+        newItemDialog.add(item_count_Tf_Dialog);
+        newItemDialog.add(itemPriceLabelDialog);
+        newItemDialog.add(item_price_TF_Dialog);
+        newItemDialog.add(saveItemBtn);
+        newItemDialog.add(cancelItemBTN);
+        newItemDialog.pack();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "Save Invoice":
-                saveInvoice();
+            case "Create Item":
+                if(invoiceNumberLabel.getText()!="") {
+                    addItem();
+                    newItemDialog.setVisible(true);
+                }
+                else             JOptionPane.showMessageDialog(MainController.mainFrame,"Please Create a new Invoice first","Error",JOptionPane.ERROR_MESSAGE);
+// saveInvoice();
                 break;
             case "Delete Invoice":
                 deleteInvoice();
@@ -149,8 +187,12 @@ public class MainFrame extends JFrame implements ActionListener {
 
                 createInvoice();
                 break;
-            case "Cancel":
-                cancel();
+            case "Delete Item":
+                if(invoiceNumberLabel.getText()!="") {
+                    if(selectedRow == -1) JOptionPane.showMessageDialog(MainController.mainFrame,"Please Choose an Item First","Error",JOptionPane.ERROR_MESSAGE);
+else  deleteItem();
+                } else   JOptionPane.showMessageDialog(MainController.mainFrame,"Please Choose an  Invoice first","Error",JOptionPane.ERROR_MESSAGE);
+
                 break;
             case "Load":
 
@@ -160,10 +202,68 @@ public class MainFrame extends JFrame implements ActionListener {
                 fileOperations.writeFile(FileOperations.invoiceHeaderArrayList);
 
                 break;
+            case "Item Add":
+                addItemTF_Dialog();
+                break;
+            case "Item Cancel":
+                item_count_Tf_Dialog.setText("");
+                item_price_TF_Dialog.setText("");
+                item_Name_TF_Dialog.setText("");
+                newItemDialog.dispose();
+                break;
 
         }
     }
+    ArrayList<invoiceLine> lineList = new ArrayList<invoiceLine>();
 
+    private  void addItem(){
+        lineList.clear();
+
+
+       int rowsCount= itemsTable.getInvoiceItemsTable().getRowCount();
+       System.out.println(rowsCount);
+
+       for (int i=0;i<rowsCount;i++){
+           invoiceLine line = new invoiceLine(Integer.parseInt(invoiceNumberLabel.getText()),itemsTable.getInvoiceItemsTable().getValueAt(i,1).toString(),Double.parseDouble(itemsTable.getInvoiceItemsTable().getValueAt(i,2).toString()),Integer.parseInt(itemsTable.getInvoiceItemsTable().getValueAt(i,3).toString()));
+            lineList.add(line);
+       }
+
+
+    }
+    private  void addItemTF_Dialog(){
+        double total=0;
+        int rowsCount= itemsTable.getInvoiceItemsTable().getRowCount();
+
+        String[][] data = new String[rowsCount+1][5];
+
+        invoiceLine invoiceLine = new invoiceLine(Integer.parseInt( invoiceNumberLabel.getText()),item_Name_TF_Dialog.getText(),Double.parseDouble(item_price_TF_Dialog.getText()),Integer.parseInt(item_count_Tf_Dialog.getText()));
+        lineList.add(invoiceLine);
+        int i =0;
+        for (invoiceLine x :
+                lineList) {
+            data[i][0] = Integer.toString(i + 1);
+            data[i][1] = x.getItemName();
+            data[i][2] = Double.toString(x.getItemPrice());
+            data[i][3] = Integer.toString(x.getItemCount());
+            data[i][4] = Double.toString(x.getItemCount() * x.getItemPrice());
+            total += (x.getItemCount() * x.getItemPrice());
+            i++;
+        }
+        remove(itemsTable);
+        remove(itemsTableScroll);
+
+        itemsTable = new ItemsTable(data);
+        itemsTableScroll = new JScrollPane(itemsTable.getInvoiceItemsTable());
+        itemsTableScroll.setBounds(600, 283, 500, 402);
+        add(itemsTableScroll);
+        item_Name_TF_Dialog.setText("");
+        item_price_TF_Dialog.setText("");
+        item_count_Tf_Dialog.setText("");
+        newItemDialog.dispose();
+        invoicesTotalLabel.setText(Double.toString(total));
+
+
+    }
     private String[][] getInvoiceData(ArrayList<invoiceHeader> headerArrayList) {
         String data[][] = new String[headerArrayList.size()][4];
         for (int i = 0; i < headerArrayList.size(); i++) {
@@ -277,39 +377,72 @@ public class MainFrame extends JFrame implements ActionListener {
         invoiceNumberLabel.setText(Integer.toString(invoiceNum));
         invoiceDateTextField.setText("");
         customerNameTextField.setText("");
-        invoicesTotalLabel.setText("");
+        invoicesTotalLabel.setText("0");
         remove(itemsTable);
         remove(itemsTableScroll);
 
 
-        itemsTable = new ItemsTable(new String[][]{
-                {"", "", "", "", ""},
-                {"", "", "", "", ""},
-                {"", "", "", "", ""},
-                {"", "", "", "", ""},
-                {"", "", "", "", ""},
-
-        });
-        itemsTableScroll = new JScrollPane(itemsTable.getInvoiceItemsTable());
-        itemsTableScroll.setBounds(600, 283, 500, 402);
-        add(itemsTableScroll);
+//        itemsTable = new ItemsTable(new String[][]{
+//                {"", "", "", "", ""},
+//                {"", "", "", "", ""},
+//                {"", "", "", "", ""},
+//                {"", "", "", "", ""},
+//                {"", "", "", "", ""},
+//
+//        });
+//        itemsTableScroll = new JScrollPane(itemsTable.getInvoiceItemsTable());
+//        itemsTableScroll.setBounds(600, 283, 500, 402);
+//        add(itemsTableScroll);
     }
 
-    private void cancel() {
+    private void deleteItem() {
+      //  System.out.println(selectedRow+"ssssssssssssssss");
+        addItem();
+
+        double total=0;
+        lineList.remove(selectedRow);
+        int rowsCount= lineList.size();
+
+        String[][] data = new String[rowsCount][5];
 
 
-        invoiceNumberLabel.setText("");
-        invoiceDateTextField.setText("");
-        customerNameTextField.setText("");
-        invoicesTotalLabel.setText("");
+        int i =0;
+        for (invoiceLine x :
+                lineList) {
+            data[i][0] = Integer.toString(i + 1);
+            data[i][1] = x.getItemName();
+            data[i][2] = Double.toString(x.getItemPrice());
+            data[i][3] = Integer.toString(x.getItemCount());
+            data[i][4] = Double.toString(x.getItemCount() * x.getItemPrice());
+            total += (x.getItemCount() * x.getItemPrice());
+            i++;
+        }
+
+remove(itemsTableScroll);
         remove(itemsTable);
-        remove(itemsTableScroll);
 
-
-        itemsTable = new ItemsTable();
+        itemsTable = new ItemsTable(data);
         itemsTableScroll = new JScrollPane(itemsTable.getInvoiceItemsTable());
         itemsTableScroll.setBounds(600, 283, 500, 402);
         add(itemsTableScroll);
+        item_Name_TF_Dialog.setText("");
+        item_price_TF_Dialog.setText("");
+        item_count_Tf_Dialog.setText("");
+        newItemDialog.dispose();
+        invoicesTotalLabel.setText(Double.toString(total));
+
+//        invoiceNumberLabel.setText("");
+//        invoiceDateTextField.setText("");
+//        customerNameTextField.setText("");
+//        invoicesTotalLabel.setText("");
+//        remove(itemsTable);
+//        remove(itemsTableScroll);
+//
+//
+//        itemsTable = new ItemsTable();
+//        itemsTableScroll = new JScrollPane(itemsTable.getInvoiceItemsTable());
+//        itemsTableScroll.setBounds(600, 283, 500, 402);
+//        add(itemsTableScroll);
     }
 
     private void saveInvoice() {
