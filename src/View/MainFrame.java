@@ -134,8 +134,7 @@ public class MainFrame extends JFrame implements ActionListener {
         menuBar.saveFileMenu.setActionCommand("Save File");
         menuBar.saveFileMenu.addActionListener(this::actionPerformed);
         initialize_Item_Dialog();
-        //loadFile();
-       // item_Dialog.setVisible(true);
+        loadFile();
 
     }
     JTextField  item_Name_TF_Dialog;
