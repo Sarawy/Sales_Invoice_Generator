@@ -38,7 +38,7 @@ public class MainFrame extends JFrame implements ActionListener {
     MenuBar menuBar;
     private JDialog newItemDialog;
     public static FileOperations fileOperations = new FileOperations();
-    public  static  int selectedRow=-1;
+    public  static  int selectedRow;
     public MainFrame() {
         super("Sales Invoice Generator");
         setLayout(null);
@@ -134,7 +134,7 @@ public class MainFrame extends JFrame implements ActionListener {
         menuBar.saveFileMenu.setActionCommand("Save File");
         menuBar.saveFileMenu.addActionListener(this::actionPerformed);
         initialize_Item_Dialog();
-        loadFile();
+      //  loadFile();
 
     }
     JTextField  item_Name_TF_Dialog;
@@ -174,6 +174,7 @@ public class MainFrame extends JFrame implements ActionListener {
                 if(invoiceNumberLabel.getText()!="") {
                     addItem();
                     newItemDialog.setVisible(true);
+
                 }
                 else             JOptionPane.showMessageDialog(MainController.mainFrame,"Please Create a new Invoice first","Error",JOptionPane.ERROR_MESSAGE);
 // saveInvoice();
@@ -189,7 +190,7 @@ public class MainFrame extends JFrame implements ActionListener {
             case "Delete Item":
                 if(invoiceNumberLabel.getText()!="") {
                     if(selectedRow == -1) JOptionPane.showMessageDialog(MainController.mainFrame,"Please Choose an Item First","Error",JOptionPane.ERROR_MESSAGE);
-else  deleteItem();
+else  deleteItem(); saveInvoice();
                 } else   JOptionPane.showMessageDialog(MainController.mainFrame,"Please Choose an  Invoice first","Error",JOptionPane.ERROR_MESSAGE);
 
                 break;
@@ -203,6 +204,7 @@ else  deleteItem();
                 break;
             case "Item Add":
                 addItemTF_Dialog();
+                saveInvoice();
                 break;
             case "Item Cancel":
                 item_count_Tf_Dialog.setText("");
@@ -349,11 +351,6 @@ else  deleteItem();
 
 
             itemsTable = new ItemsTable(new String[][]{
-                    {"", "", "", "", ""},
-                    {"", "", "", "", ""},
-                    {"", "", "", "", ""},
-                    {"", "", "", "", ""},
-                    {"", "", "", "", ""},
 
             });
             itemsTableScroll = new JScrollPane(itemsTable.getInvoiceItemsTable());

@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 public class InvoiceTable extends  JTable{
     public JTable invoicesTable;
     private Object [] cols= {"No.","Date","Customer", "Total"};
-    private  static MousaHandler testttt= new MousaHandler();
+    public   static MousaHandler testttt= new MousaHandler();
     private  static DefaultTableModel model = new DefaultTableModel();
 
     public InvoiceTable(){

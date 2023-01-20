@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class FileOperations {
     public static ArrayList<invoiceHeader> invoiceHeaderArrayList = new ArrayList<invoiceHeader>();
-    public static ArrayList <invoiceLine> invoiceLineArrayList;
+    public static ArrayList <invoiceLine> invoiceLineArrayList =  new ArrayList<invoiceLine>();
 
 
     public ArrayList<invoiceHeader> readFile(String invoiceHeaderPath,String invoiceLinePath) throws IOException {

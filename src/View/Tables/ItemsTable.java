@@ -8,10 +8,12 @@ public class ItemsTable extends JTable {
 
     public ItemsTable(){
         invoiceItemsTable = new JTable();
+        invoiceItemsTable.addMouseListener(InvoiceTable.testttt);
 
     }
     public ItemsTable(String [] [] data){
         invoiceItemsTable = new JTable(data,cols);
+        invoiceItemsTable.addMouseListener(InvoiceTable.testttt);
 
 
     }

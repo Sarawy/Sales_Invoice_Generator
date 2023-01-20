@@ -18,6 +18,7 @@ public class MousaHandler extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
         MainFrame.selectedRow=MainController.mainFrame.itemsTable.getInvoiceItemsTable().getSelectedRow();
+        System.out.println(MainFrame.selectedRow+"sleecteddd");
         if (MainController.mainFrame.invoiceTable.getInvoicesTable().getSelectedRow() > -1) {
 
             int invoiceIndex = MainController.mainFrame.invoiceTable.getInvoicesTable().getSelectedRow();
